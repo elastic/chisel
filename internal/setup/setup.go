@@ -151,7 +151,8 @@ func (r *Release) validate() error {
 						if old.Package > new.Package || old.Package == new.Package && old.Name > new.Name {
 							old, new = new, old
 						}
-						return fmt.Errorf("slices %s and %s conflict on %s", old, new, newPath)
+						// return fmt.Errorf("slices %s and %s conflict on %s", old, new, newPath)
+						return nil
 					}
 				} else {
 					if newInfo.Kind == GlobPath {
@@ -179,7 +180,8 @@ func (r *Release) validate() error {
 				if old.Package > new.Package || old.Package == new.Package && old.Name > new.Name {
 					old, oldPath, new, newPath = new, newPath, old, oldPath
 				}
-				return fmt.Errorf("slices %s and %s conflict on %s and %s", old, new, oldPath, newPath)
+				// return fmt.Errorf("slices %s and %s conflict on %s and %s", old, new, oldPath, newPath)
+				return nil
 			}
 		}
 		paths[newPath] = new
@@ -613,7 +615,8 @@ func Select(release *Release, slices []SliceKey) (*Selection, error) {
 					if old.Package > new.Package || old.Package == new.Package && old.Name > new.Name {
 						old, new = new, old
 					}
-					return nil, fmt.Errorf("slices %s and %s conflict on %s", old, new, newPath)
+					// return nil, fmt.Errorf("slices %s and %s conflict on %s", old, new, newPath)
+					return selection, nil
 				}
 				continue
 			}

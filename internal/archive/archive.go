@@ -1,10 +1,13 @@
 package archive
 
 import (
+	"bufio"
 	"compress/gzip"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
+	"os"
 	"strings"
 	"time"
 
@@ -248,6 +251,16 @@ func (index *ubuntuIndex) fetch(suffix, digest string) (io.ReadCloser, error) {
 	} else {
 		url = baseURL + "dists/" + index.suite + "/" + suffix
 	}
+
+	// Dirty hack here
+	file, err := os.OpenFile("/tmp/urls.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		log.Fatalf("failed creating file: %s", err)
+	}
+	datawriter := bufio.NewWriter(file)
+	datawriter.WriteString(url + "\n")
+	datawriter.Flush()
+	file.Close()
 
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
